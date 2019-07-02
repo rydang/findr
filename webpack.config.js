@@ -7,8 +7,8 @@ module.exports = {
     filename: 'bundle.js',
   },
   devServer: {
-    // contentBase: path.join(__dirname, 'dist'),
-    publicPath: '/build/',
+    contentBase: path.join(__dirname, 'client'),
+    publicPath: '/build',
     proxy: {
       '/api': 'http://localhost:3000',
     },
@@ -18,7 +18,10 @@ module.exports = {
     rules: [
       {
         test: /\.jsx?/,
-        exclude: /(node_modules|bower_components)/,
+        exclude: /(node_modules)/,
+        resolve: {
+          extensions: ['.js', '.jsx'],
+        },
         use: {
           loader: 'babel-loader',
           options: {

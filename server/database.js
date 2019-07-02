@@ -8,8 +8,6 @@ const pool = pg.Pool({
   port: 5432,
 });
 
-// const uri = 'postgres://postgres@localhost/findr';
-
 let db;
 pool.connect()
   // create tables if nonexistent
