@@ -6,14 +6,14 @@ module.exports = {
     path: path.resolve(__dirname, 'build'),
     filename: 'bundle.js',
   },
-  // devServer: {
-  //   // contentBase: path.join(__dirname, 'dist'),
-  //   publicPath: '/build/',
-  //   proxy: {
-  //     '/': 'http://localhost:3000',
-  //   },
-  //   hot: true,
-  // },
+  devServer: {
+    // contentBase: path.join(__dirname, 'dist'),
+    publicPath: '/build/',
+    proxy: {
+      '/api': 'http://localhost:3000',
+    },
+    hot: true,
+  },
   module: {
     rules: [
       {
