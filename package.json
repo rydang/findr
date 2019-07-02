@@ -1,0 +1,39 @@
+{
+  "name": "findr",
+  "version": "1.0.0",
+  "description": "an application to help find people with similar interests and hobbies",
+  "main": "index.js",
+  "scripts": {
+    "start": "nodemon server/server.js",
+    "build": "set NODE_ENV=production & webpack --mode production",
+    "bs": "npm run build & npm start",
+    "dev": "concurrently \"npm start\" \"webpack-dev-server --open --mode development\"",
+    "devonly": "webpack-dev-server --open --mode development",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/rydang/findr.git"
+  },
+  "author": "Ryan Dang",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/rydang/findr/issues"
+  },
+  "homepage": "https://github.com/rydang/findr#readme",
+  "keywords": [],
+  "dependencies": {
+    "express": "^4.17.1",
+    "nodemon": "^1.19.1",
+    "react": "^16.8.6",
+    "webpack": "^4.35.2",
+    "webpack-dev-server": "^3.7.2"
+  },
+  "devDependencies": {
+    "@babel/core": "^7.4.5",
+    "@babel/preset-env": "^7.4.5",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.6",
+    "webpack-cli": "^3.3.5"
+  }
+}
