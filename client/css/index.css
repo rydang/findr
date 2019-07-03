@@ -1,0 +1,23 @@
+.friendsDisplay {
+  display:grid;
+  grid-template-columns: repeat(5, 1fr);
+}
+
+.friendDisplay {
+  background-color: lightblue;
+  border: 1px solid black;
+  margin: 10px;
+  transition: box-shadow .3s;
+}
+.friendDisplay:hover {
+  box-shadow: 15px 15px 30px rgba(49, 114, 136, 0.8); 
+}
+
+.friendDisplay:hover .interests {
+  overflow: auto;
+}
+
+.interests {
+  height: 60px;
+  overflow: hidden;
+}

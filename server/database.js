@@ -98,10 +98,18 @@ pool.connect()
 pool.end();
 
 router.get('/', (req, res) => db.query('SELECT * FROM friends, interests WHERE friends.id=interests.friend_id')
+  .then(everything => res.status(200).send(everything.rows))
+  .catch(err => res.status(400).send(err)));
+
+router.get('/friends', (req, res) => db.query('SELECT * FROM friends')
   .then(friends => res.status(200).send(friends.rows))
   .catch(err => res.status(400).send(err)));
 
-router.post('/friend', (req, res) => {
+router.get('/interests', (req, res) => db.query('SELECT * FROM interests')
+  .then(interests => res.status(200).send(interests.rows))
+  .catch(err => res.status(400).send(err)));
+
+router.post('/friends', (req, res) => {
   const {
     firstName,
     lastName,
@@ -116,7 +124,7 @@ router.post('/friend', (req, res) => {
     .catch(err => res.status(400).send(err));
 });
 
-router.post('/interest', (req, res) => {
+router.post('/interests', (req, res) => {
   const { interests } = req.body;
 
   let insertQuery = 'INSERT INTO "interests" (friend_id, interest) VALUES';
