@@ -123,9 +123,13 @@ router.post('/friends', (req, res) => {
   } = req.body;
   const parameters = [firstName, lastName, phoneNumber, username, password];
 
-  db.query('INSERT INTO "friends" (first_name, last_name, phone_number, username, password) VALUES ($1,$2,$3,$4,$5)', parameters)
-    .then(() => res.status(200).send('success'))
-    .catch(err => res.status(400).send(err));
+  db.query(`SELECT username FROM "friends" WHERE username='${username}'`)
+    .then((users) => {
+      if (users.rows.length) return res.status(400).send('user already exists');
+      return db.query('INSERT INTO "friends" (first_name, last_name, phone_number, username, password) VALUES ($1,$2,$3,$4,$5)', parameters)
+        .then(() => res.status(200).send('success'))
+        .catch(err => res.status(400).send(err));
+    });
 });
 
 router.post('/interests', (req, res) => {
@@ -146,8 +150,7 @@ router.post('/interests', (req, res) => {
 
 router.post('/verify', (req, res) => {
   const { username, password } = req.body;
-  console.log(`SELECT * FROM friends WHERE username='${username}'`);
-  db.query(`SELECT * FROM friends WHERE username='${username}'`)
+  db.query(`SELECT password FROM friends WHERE username='${username}'`)
     .then((users) => {
       if (!users.rows.length) return res.status(401).send('User not found');
 
