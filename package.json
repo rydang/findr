@@ -22,6 +22,7 @@
   "homepage": "https://github.com/rydang/findr#readme",
   "keywords": [],
   "dependencies": {
+    "body-parser": "^1.19.0",
     "express": "^4.17.1",
     "nodemon": "^1.19.1",
     "pg": "^7.11.0",
