@@ -7,6 +7,7 @@ const app = express();
 
 app.use('/build', express.static('build'));
 
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use('/api', database);

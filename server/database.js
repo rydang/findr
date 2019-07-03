@@ -144,4 +144,17 @@ router.post('/interests', (req, res) => {
     .catch(err => res.status(400).send(err));
 });
 
+router.post('/verify', (req, res) => {
+  const { username, password } = req.body;
+  console.log(`SELECT * FROM friends WHERE username='${username}'`);
+  db.query(`SELECT * FROM friends WHERE username='${username}'`)
+    .then((users) => {
+      if (!users.rows.length) return res.status(401).send('User not found');
+
+      if (users.rows[0].password !== password) return res.status(401).send('Password incorrect');
+      return res.status(200).redirect('/friends');
+    })
+    .catch(err => res.status(400).send(err));
+});
+
 module.exports = router;

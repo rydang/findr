@@ -9,10 +9,19 @@ class FriendsPage extends Component {
   render() {
     return (
       <div>
-        <h1>Findr</h1>
-        <h3>Find new friends today!</h3>
+        <div className="loginPage">
+          <h1>Findr</h1>
+          <h3>Find new friends today!</h3>
+        </div>
         <hr />
-        <div>LOGIN HERE</div>
+        <form action="/api/verify" method="post">
+          {'Username:'}
+          <input name="username" type="text" />
+          {'Password:'}
+          <input name="password" type="password" />
+          <div />
+          <input type="submit" value="Login" />
+        </form>
       </div>
     );
   }

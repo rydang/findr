@@ -13,6 +13,7 @@ module.exports = {
     historyApiFallback: true,
     proxy: {
       '/api': 'http://localhost:3000',
+      '/verify': 'http://localhost:3000',
     },
     hot: true,
   },
