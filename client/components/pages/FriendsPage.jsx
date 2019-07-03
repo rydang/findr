@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
-import FriendDisplay from './FriendDisplay';
+import FriendDisplay from '../FriendDisplay';
 
-class FriendsDisplay extends Component {
+class FriendsPage extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -52,11 +52,16 @@ class FriendsDisplay extends Component {
 
   render() {
     return (
-      <div className="friendsDisplay">
-        {this.renderFriends()}
+      <div>
+        <h1>Findr</h1>
+        <h3>Find new friends today!</h3>
+        <hr />
+        <div className="friendsPage">
+          {this.renderFriends() || 'loading'}
+        </div>
       </div>
     );
   }
 }
 
-export default FriendsDisplay;
+export default FriendsPage;

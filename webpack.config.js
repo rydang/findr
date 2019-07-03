@@ -1,4 +1,5 @@
 const path = require('path');
+const HtmlWebpackPlugin = require('html-webpack-plugin');
 
 module.exports = {
   entry: './client/index.js',
@@ -9,6 +10,7 @@ module.exports = {
   devServer: {
     contentBase: path.join(__dirname, 'client'),
     publicPath: '/build',
+    historyApiFallback: true,
     proxy: {
       '/api': 'http://localhost:3000',
     },

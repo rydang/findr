@@ -44,6 +44,10 @@ pool.connect()
             'Lion', 'Tame', '333-333-3333', 'liontame', 'hunter2',
             'Lyon', 'Tayme', '444-444-4444', 'lyontayme', 'hunter2',
             'Rian', 'Lang', '555-555-5555', 'rianlang', 'hunter2',
+            'Ryan', 'Dang', '666-666-6666', 'ryandang', 'hunter2',
+            'Lian', 'Zhang', '777-777-7777', 'lianzhang', 'hunter2',
+            'Pyan', 'Pang', '888-888-8888', 'pyanpang', 'hunter2',
+            'Pian', 'Pain', '999-999-9999', 'pianpain', 'hunter2',
           ];
 
           let insertQuery = 'INSERT INTO friends(first_name, last_name, phone_number, username, password) VALUES';
