@@ -1,5 +1,6 @@
 @import 'friendPage.css';
 @import 'loginPage.css';
+@import 'signupPage.css';
 
 .lostPage {
   display: grid;

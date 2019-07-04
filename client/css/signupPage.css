@@ -1,0 +1,36 @@
+.signupPage {
+  background-image: linear-gradient(lightblue, rgb(255, 255, 255));
+  height: 100%;
+  border: 2px solid black;
+}
+
+.signupHeader {
+  display:grid;
+  background-color: lightblue;
+  border-bottom: 2px solid black;
+  justify-content: center;
+  text-align: center;
+}
+
+.signupEntry {
+  display:grid;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+.signupForm {
+  display:grid;
+  background-color: rgb(218, 246, 255);
+  border: 2px solid black;
+  padding: 10%;
+  justify-content: center;
+  text-align: left;
+  grid-template-columns: 1fr 1fr;
+}
+
+.signupForm input {
+  width: 75%;
+}
+.error {
+  border: 1px solid red;
+}

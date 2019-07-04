@@ -12,10 +12,12 @@ app.use(bodyParser.json());
 
 app.use('/api', database);
 
-if (process.env.NODE_ENV !== 'development') {
-  app.get('/*', (req, res) => {
-    res.sendFile(path.resolve(__dirname, '../client/index.html'));
-  });
-}
+app.post('/signup', (req, res) => {
+  res.send(req.body);
+});
+
+app.get('/*', (req, res) => {
+  res.sendFile(path.resolve(__dirname, '../client/index.html'));
+});
 
 app.listen(3000);

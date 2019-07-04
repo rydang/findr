@@ -1,30 +1,25 @@
 import React, { Component } from 'react';
+import { NavLink } from 'react-router-dom';
 
-class FriendsPage extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {};
-  }
+const LoginPage = () => (
+  <div className="loginPage">
+    <div className="loginHeader">
+      <h1>Findr</h1>
+      <h3>Find new friends today!</h3>
+    </div>
+    <div className="loginEntry">
+      <form className="loginForm" action="/api/verify" method="post">
+        {'Username:'}
+        <input name="username" type="text" />
+        {'Password:'}
+        <input name="password" type="password" />
+        <NavLink to="/signup">
+          <button type="button">Signup</button>
+        </NavLink>
+        <input type="submit" value="Login" />
+      </form>
+    </div>
+  </div>
+);
 
-  render() {
-    return (
-      <div>
-        <div className="loginPage">
-          <h1>Findr</h1>
-          <h3>Find new friends today!</h3>
-        </div>
-        <hr />
-        <form action="/api/verify" method="post">
-          {'Username:'}
-          <input name="username" type="text" />
-          {'Password:'}
-          <input name="password" type="password" />
-          <div />
-          <input type="submit" value="Login" />
-        </form>
-      </div>
-    );
-  }
-}
-
-export default FriendsPage;
+export default LoginPage;

@@ -1,17 +1,38 @@
 .loginPage {
+  background-image: linear-gradient(lightblue, rgb(255, 255, 255));
+  height: 100%;
+  border: 2px solid black;
+}
+
+.loginHeader {
   display:grid;
+  background-color: lightblue;
+  border-bottom: 2px solid black;
   justify-content: center;
   text-align: center;
 }
 
-form {
+.loginEntry {
   display:grid;
   justify-content: center;
-  text-align: right;
+  margin-top: 10%;
+}
+
+.loginForm {
+  display:grid;
+  background-color: rgb(218, 246, 255);
+  border: 2px solid black;
+  padding: 10%;
+  justify-content: center;
+  text-align: center;
   grid-template-columns: 1fr 1fr;
 }
 
-input {
-  margin: 0px 10px;
-  width: 10%;
+.loginForm input {
+  width: 75%;
+}
+
+.loginForm button {
+  margin-left: 25%;
+  width: 75%;
 }

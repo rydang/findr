@@ -101,7 +101,15 @@ pool.connect()
 
 pool.end();
 
-router.get('/', (req, res) => db.query('SELECT * FROM friends, interests WHERE friends.id=interests.friend_id')
+router.get('/', (req, res) => db.query(
+  `SELECT
+  friends.first_name,
+  friends.last_name,
+  friends.phone_number,
+  friends.username,
+  interests.interest
+  FROM friends, interests WHERE friends.id=interests.friend_id`,
+)
   .then(everything => res.status(200).send(everything.rows))
   .catch(err => res.status(400).send(err)));
 
