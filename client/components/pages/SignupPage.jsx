@@ -32,8 +32,10 @@ class SignupPage extends Component {
 
   changeFormEntry(e) {
     const { fields, errors } = this.state;
-    fields[e.target.getAttribute('name')] = e.target.value.trim();
-    errors[e.target.getAttribute('name')] = false;
+    const name = e.target.getAttribute('name');
+    if (name === 'username') e.target.value = e.target.value.trim();
+    fields[name] = e.target.value;
+    errors[name] = false;
     this.setState({ fields });
   }
 
@@ -84,7 +86,7 @@ class SignupPage extends Component {
           <h3>Signup here to begin your search!</h3>
         </div>
         <div className="signupEntry">
-          <form className="signupForm" action="/signup" method="post" id="signup">
+          <form className="signupForm" action="/api/friends" method="post" >
             {'Username:'}
             <input name="username" type="text" onChange={this.changeFormEntry} className={username ? 'error' : ''} />
             {'Password:'}

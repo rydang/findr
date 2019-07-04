@@ -12,10 +12,6 @@ app.use(bodyParser.json());
 
 app.use('/api', database);
 
-app.post('/signup', (req, res) => {
-  res.send(req.body);
-});
-
 app.get('/*', (req, res) => {
   res.sendFile(path.resolve(__dirname, '../client/index.html'));
 });

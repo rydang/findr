@@ -82,6 +82,31 @@ pool.connect()
             4, 'acting',
             5, 'spelling',
             5, 'dancing',
+            6, 'testing',
+            6, 'smelling',
+            6, 'dancing',
+            6, 'verbing',
+            6, 'nouning',
+            6, 'adjectiveing',
+            6, 'playing',
+            6, 'singing',
+            6, 'adulting',
+            6, 'kidding',
+            6, 'running',
+            6, '-ing',
+            6, 'screamin',
+            6, 'databaseing',
+            6, 'SQLing',
+            6, 'scrolling',
+            6, 'reacting',
+            6, 'reduxing',
+            6, 'routing',
+            7, 'model airplanes',
+            7, 'flying',
+            8, 'tapdance',
+            8, 'music',
+            9, 'racing',
+            9, 'competition',
           ];
           let insertQuery = 'INSERT INTO interests (friend_id, interest) VALUES';
           for (let i = 0; i < interests.length; i += 2) {
@@ -123,20 +148,43 @@ router.get('/interests', (req, res) => db.query('SELECT * FROM interests')
 
 router.post('/friends', (req, res) => {
   const {
-    firstName,
-    lastName,
-    phoneNumber,
+    first_name,
+    last_name,
+    phone_number,
     username,
     password,
+    interest,
   } = req.body;
-  const parameters = [firstName, lastName, phoneNumber, username, password];
+  const parameters = [first_name.trim(), last_name.trim(), phone_number, username, password];
+  parameters[2].replace(/\D/g, '');
 
   db.query(`SELECT username FROM "friends" WHERE username='${username}'`)
     .then((users) => {
       if (users.rows.length) return res.status(400).send('user already exists');
-      return db.query('INSERT INTO "friends" (first_name, last_name, phone_number, username, password) VALUES ($1,$2,$3,$4,$5)', parameters)
-        .then(() => res.status(200).send('success'))
-        .catch(err => res.status(400).send(err));
+      db.query('INSERT INTO "friends" (first_name, last_name, phone_number, username, password) VALUES ($1,$2,$3,$4,$5) RETURNING id', parameters)
+        .then((friends) => {
+          const { id } = friends.rows[0];
+          let insertQuery = 'INSERT INTO "interests" (friend_id, interest) VALUES';
+          const interestParameters = [];
+          let emptyInterests = 0;
+
+          interest.forEach((entry, i) => {
+            if (!entry.trim()) {
+              emptyInterests += 1;
+              return;
+            }
+            insertQuery += `(${id},$${i + 1 - emptyInterests})`;
+            interestParameters.push(entry);
+            if (i < interest.length - 2) insertQuery += ',';
+          });
+
+          return db.query(insertQuery, interestParameters)
+            .then(() => {
+              res.status(200).redirect('/friends');
+            })
+            .catch(err => res.status(400).send(err));
+        })
+        .catch(err => res.send(err));
     });
 });
 
