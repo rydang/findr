@@ -1,4 +1,6 @@
 import React, { Component } from 'react';
+import Cookies from 'js-cookie';
+import { NavLink } from 'react-router-dom';
 import FriendDisplay from '../FriendDisplay';
 
 class FriendsPage extends Component {
@@ -6,13 +8,26 @@ class FriendsPage extends Component {
     super(props);
     this.state = {
       friends: [],
+      allFriends: [],
       interests: {},
+      username: Cookies.get('username'),
     };
 
-    fetch('/api/friends')
+    this.renderButton = this.renderButton.bind(this);
+    this.renderFriends = this.renderFriends.bind(this);
+    this.switchUsername = this.switchUsername.bind(this);
+
+    const { username } = this.state;
+
+    fetch((username) ? `/api/friends/${username}` : '/api/friends')
       .then(res => res.json())
       .then((friends) => {
         this.setState({ friends });
+      });
+    fetch('/api/friends')
+      .then(res => res.json())
+      .then((allFriends) => {
+        this.setState({ allFriends });
       });
     fetch('/api/interests')
       .then(res => res.json())
@@ -27,9 +42,28 @@ class FriendsPage extends Component {
       });
   }
 
+  switchUsername() {
+    const { username } = this.state;
+    this.setState({ username: username ? '' : Cookies.get('username') });
+  }
+
+  renderButton() {
+    const { username } = this.state;
+
+    return (
+      <div>
+        <button type="button" onClick={this.switchUsername}>
+          {username ? 'Find all friends!' : 'Find friends with similar interests!'}
+        </button>
+      </div>
+    )
+  }
+
   renderFriends() {
+    const { friends: someFriends, interests, allFriends, username } = this.state;
+    const friends = username ? someFriends : allFriends;
+
     const friendDisplays = [];
-    const { friends, interests } = this.state;
     friends.forEach((friend) => {
       const
         {
@@ -52,11 +86,16 @@ class FriendsPage extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Findr</h1>
-        <h3>Find new friends today!</h3>
-        <hr />
-        <div className="friendsPage">
+      <div className="friendsPage">
+        <div className="friendsHeader">
+          <h1>Findr</h1>
+          <h3>Find new friends today!</h3>
+          {this.renderButton()}
+          <NavLink to="/">
+            <button type="button" onClick={() => Cookies.remove('username')}>Logout</button>
+          </NavLink>
+        </div>
+        <div className="friendsDisplay">
           {this.renderFriends() || 'loading'}
         </div>
       </div>

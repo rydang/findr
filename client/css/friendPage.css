@@ -1,4 +1,18 @@
 .friendsPage {
+  background-image: linear-gradient(lightblue, rgb(255, 255, 255));
+  height: 100%;
+  border: 2px solid black;
+}
+
+.friendsHeader {
+  display:grid;
+  background-color: lightblue;
+  border-bottom: 2px solid black;
+  justify-content: center;
+  text-align: center;
+}
+
+.friendsDisplay {
   display:grid;
   grid-template-columns: repeat(5, 1fr);
 }
@@ -7,10 +21,10 @@
   background-color: lightblue;
   border: 1px solid black;
   margin: 10px;
-  transition: box-shadow .3s;
+  transition: box-shadow 1s;
 }
 .friendDisplay:hover {
-  box-shadow: 15px 15px 30px rgba(49, 114, 136, 0.8); 
+  box-shadow: 30px 30px 30px rgba(49, 114, 136, 0.8); 
 }
 
 .friendDisplay:hover .interests {

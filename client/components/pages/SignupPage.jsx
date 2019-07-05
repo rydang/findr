@@ -100,7 +100,11 @@ class SignupPage extends Component {
             {'Phone Number:'}
             <input name="phone_number" type="text" onChange={this.changeFormEntry} className={phone_number ? 'error' : ''} />
             {this.renderInterests()}
-            <div />
+            <NavLink to="/">
+              <button type="button">
+                Back to Login
+              </button>
+            </NavLink>
             <input type="button" value="Signup" onClick={this.checkForm} />
           </form>
         </div>

@@ -1,10 +1,4 @@
 @import 'friendPage.css';
 @import 'loginPage.css';
 @import 'signupPage.css';
-
-.lostPage {
-  display: grid;
-  justify-content: center;
-  align-items: center;
-  height: 90%;
-}
+@import 'errorPage.css';

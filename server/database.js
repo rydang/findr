@@ -74,14 +74,18 @@ pool.connect()
             1, 'basketball',
             1, 'tea',
             1, 'sushi',
+            1, 'verbing',
             2, 'politics',
             2, 'italian cuisine',
+            2, 'sushi',
             3, 'meat',
+            3, 'basketball',
             3, 'africa',
             3, 'hunting',
             4, 'acting',
             5, 'spelling',
             5, 'dancing',
+            5, 'acting',
             6, 'testing',
             6, 'smelling',
             6, 'dancing',
@@ -103,9 +107,15 @@ pool.connect()
             6, 'routing',
             7, 'model airplanes',
             7, 'flying',
+            7, 'sushi',
+            7, 'testing',
             8, 'tapdance',
             8, 'music',
+            8, 'tennis',
+            8, 'playing',
             9, 'racing',
+            9, 'tea',
+            9, 'acting',
             9, 'competition',
           ];
           let insertQuery = 'INSERT INTO interests (friend_id, interest) VALUES';
@@ -138,6 +148,25 @@ router.get('/', (req, res) => db.query(
   .then(everything => res.status(200).send(everything.rows))
   .catch(err => res.status(400).send(err)));
 
+router.get('/friends/:username', (req, res) => {
+  const { username } = req.params;
+  db.query('SELECT interests.interest FROM friends, interests WHERE friends.username=$1 AND interests.friend_id=friends.id', [username])
+    .then((result) => {
+      const interests = [];
+      const interestsString = [];
+      result.rows.forEach(({ interest }, i) => {
+        interests.push(interest);
+        interestsString.push(`$${i + 1}`);
+      });
+      const selectQuery = (
+        `SELECT * FROM friends WHERE id IN (SELECT friend_id FROM interests WHERE interest IN (${interestsString.toString()}))`
+      );
+      return db.query(selectQuery, interests);
+    })
+    .then(result => res.send(result.rows))
+    .catch(err => res.status(400).send(err));
+});
+
 router.get('/friends', (req, res) => db.query('SELECT * FROM friends')
   .then(friends => res.status(200).send(friends.rows))
   .catch(err => res.status(400).send(err)));
@@ -156,7 +185,7 @@ router.post('/friends', (req, res) => {
     interest,
   } = req.body;
   const parameters = [first_name.trim(), last_name.trim(), phone_number, username, password];
-  parameters[2].replace(/\D/g, '');
+  // parameters[2].replace(/\D/g, '');
 
   db.query(`SELECT username FROM "friends" WHERE username='${username}'`)
     .then((users) => {
@@ -180,11 +209,11 @@ router.post('/friends', (req, res) => {
 
           return db.query(insertQuery, interestParameters)
             .then(() => {
-              res.status(200).redirect('/friends');
+              res.cookie('username', username).status(200).redirect('/friends');
             })
             .catch(err => res.status(400).send(err));
         })
-        .catch(err => res.send(err));
+        .catch(err => res.status(400).send(err));
     });
 });
 
@@ -208,10 +237,12 @@ router.post('/verify', (req, res) => {
   const { username, password } = req.body;
   db.query(`SELECT password FROM friends WHERE username='${username}'`)
     .then((users) => {
-      if (!users.rows.length) return res.status(401).send('User not found');
+      if (!users.rows.length) {
+        return res.status(401).redirect('/error?error=nouser');
+      }
 
-      if (users.rows[0].password !== password) return res.status(401).send('Password incorrect');
-      return res.status(200).redirect('/friends');
+      if (users.rows[0].password !== password) return res.status(401).redirect('/error?error=wrongpass');
+      return res.cookie('username', username).status(200).redirect('/friends');
     })
     .catch(err => res.status(400).send(err));
 });

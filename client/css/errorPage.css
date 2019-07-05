@@ -1,0 +1,28 @@
+.errorArea {
+  display:grid;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  margin-top: 10%;
+}
+
+.errorSpins {
+  display:grid;
+  text-align: center;
+  grid-template-columns: 1fr 1fr 3fr 1fr;
+}
+
+img {
+  width: 100px;
+  height: 100px;
+  animation: spin infinite 10s linear;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(-360deg);
+  }
+}
