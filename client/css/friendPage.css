@@ -5,7 +5,7 @@
 }
 
 .friendsHeader {
-  display:grid;
+  display: grid;
   background-color: lightblue;
   border-bottom: 2px solid black;
   justify-content: center;
@@ -13,7 +13,7 @@
 }
 
 .friendsDisplay {
-  display:grid;
+  display: grid;
   grid-template-columns: repeat(5, 1fr);
 }
 
@@ -24,7 +24,7 @@
   transition: box-shadow 1s;
 }
 .friendDisplay:hover {
-  box-shadow: 30px 30px 30px rgba(49, 114, 136, 0.8); 
+  box-shadow: 30px 30px 30px rgba(49, 114, 136, 0.8);
 }
 
 .friendDisplay:hover .interests {
@@ -34,4 +34,13 @@
 .interests {
   height: 60px;
   overflow: hidden;
+}
+
+#logout {
+  text-decoration: none;
+  color: black;
+}
+
+#logoutbutton {
+  width: 100%;
 }

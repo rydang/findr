@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-import Interests from './Interests'
+import Interests from './Interests';
 
 class FriendDisplay extends Component {
   constructor(props) {

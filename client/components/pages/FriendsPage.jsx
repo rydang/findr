@@ -1,6 +1,7 @@
+/* eslint-disable object-curly-newline */
+/* eslint-disable camelcase */
 import React, { Component } from 'react';
-import Cookies from 'js-cookie';
-import { NavLink } from 'react-router-dom';
+import { NavLink, Redirect } from 'react-router-dom';
 import FriendDisplay from '../FriendDisplay';
 
 class FriendsPage extends Component {
@@ -10,30 +11,35 @@ class FriendsPage extends Component {
       friends: [],
       allFriends: [],
       interests: {},
-      username: Cookies.get('username'),
+      filtered: true,
+      redirect: false,
     };
 
     this.renderButton = this.renderButton.bind(this);
     this.renderFriends = this.renderFriends.bind(this);
-    this.switchUsername = this.switchUsername.bind(this);
+    this.switchFilter = this.switchFilter.bind(this);
 
-    const { username } = this.state;
-
-    fetch((username) ? `/api/friends/${username}` : '/api/friends')
-      .then(res => res.json())
-      .then((friends) => {
+    fetch('/api/filterfriends')
+      .then(res => {
+        if (res.ok) return res.json();
+        throw new Error('Error in fetch');
+      })
+      .then(friends => {
         this.setState({ friends });
+      })
+      .catch(() => {
+        this.setState({ redirect: true });
       });
     fetch('/api/friends')
       .then(res => res.json())
-      .then((allFriends) => {
+      .then(allFriends => {
         this.setState({ allFriends });
       });
     fetch('/api/interests')
       .then(res => res.json())
-      .then((json) => {
+      .then(json => {
         const interests = {};
-        json.forEach((interestEntry) => {
+        json.forEach(interestEntry => {
           const { friend_id, interest } = interestEntry;
           interests[friend_id] = interests[friend_id] || [];
           interests[friend_id].push(interest);
@@ -42,62 +48,58 @@ class FriendsPage extends Component {
       });
   }
 
-  switchUsername() {
-    const { username } = this.state;
-    this.setState({ username: username ? '' : Cookies.get('username') });
+  switchFilter() {
+    const { filtered } = this.state;
+    this.setState({ filtered: !filtered });
   }
 
   renderButton() {
-    const { username } = this.state;
+    const { filtered } = this.state;
 
     return (
-      <div>
-        <button type="button" onClick={this.switchUsername}>
-          {username ? 'Find all friends!' : 'Find friends with similar interests!'}
-        </button>
-      </div>
-    )
+      <button type="button" onClick={this.switchFilter}>
+        {filtered ? 'Find all friends!' : 'Find friends with similar interests!'}
+      </button>
+    );
   }
 
   renderFriends() {
-    const { friends: someFriends, interests, allFriends, username } = this.state;
-    const friends = username ? someFriends : allFriends;
+    const { friends: someFriends, interests, allFriends, filtered } = this.state;
+    const friends = filtered ? someFriends : allFriends;
 
     const friendDisplays = [];
-    friends.forEach((friend) => {
-      const
-        {
-          id,
-          first_name,
-          last_name,
-          phone_number,
-        } = friend;
-      friendDisplays.push(
-        <FriendDisplay
-          name={`${first_name} ${last_name}`}
-          number={phone_number}
-          interests={interests[id] || ['loading...']}
-          key={`friend${id}`}
-        />,
-      );
-    });
+    if (Array.isArray(friends)) {
+      friends.forEach(friend => {
+        const { id, first_name, last_name, phone_number } = friend;
+        friendDisplays.push(
+          <FriendDisplay
+            name={`${first_name} ${last_name}`}
+            number={phone_number}
+            interests={interests[id] || ['loading...']}
+            key={`friend${id}`}
+          />,
+        );
+      });
+    }
     return friendDisplays;
   }
 
   render() {
+    const { redirect } = this.state;
+    if (redirect) return <Redirect to="/" />;
     return (
       <div className="friendsPage">
         <div className="friendsHeader">
           <h1>Findr</h1>
           <h3>Find new friends today!</h3>
           {this.renderButton()}
-          <NavLink to="/">
-            <button type="button" onClick={() => Cookies.remove('username')}>Logout</button>
-          </NavLink>
+          <a id="logout" href="/api/logout">
+            <button id="logoutbutton" type="button">
+              Logout
+            </button>
+          </a>
         </div>
-        <div className="friendsDisplay">
-          {this.renderFriends() || 'loading'}
-        </div>
+        <div className="friendsDisplay">{this.renderFriends() || 'loading'}</div>
       </div>
     );
   }

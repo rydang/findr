@@ -1,5 +1,5 @@
-import React, { Component } from 'react';
-import { Route, Switch, NavLink, Redirect } from 'react-router-dom';
+import React from 'react';
+import { Route, Switch, Redirect } from 'react-router-dom';
 
 import FriendsPage from './pages/FriendsPage';
 import LoginPage from './pages/LoginPage';
